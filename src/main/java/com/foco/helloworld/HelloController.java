@@ -16,9 +16,14 @@ public class HelloController {
 
     private static final String HELLO_PAGE = "hello";
     private static final String JACKSON = "jackson";
+
+    private static final String CHALLENGE7_ADMIN_TEMPLATE = "admin";
+    private static final String CHALLENGE7_USER_TEMPLATE = "user";
+
     private static final String PATH_TRAV = "patht";
     private static final String _SSRF = "ssrf";
     private static final String _RCE = "rce";
+
 
     //Index
     @GetMapping("/")
@@ -93,10 +98,6 @@ public class HelloController {
 
     }
 
-
-
-
-
     //code review task
 
     
@@ -131,6 +132,20 @@ public class HelloController {
     @GetMapping( value = "/code_challenge6")
     public String code6() throws IOException {
         return "codesnip6";
+    }
+
+    //Unprotected Data Binding 
+    @GetMapping( value = "/challenge7")
+    public String code7(@ModelAttribute UnprotectedDataBinding dbind, Model m) throws IOException {
+
+        // Check if user is admin and return the right resource template
+        // TODO: Change isAdmin to type boolean
+        if(dbind.getIsAdmin() != null){
+            return CHALLENGE7_ADMIN_TEMPLATE;
+        } else {
+            return CHALLENGE7_USER_TEMPLATE;
+        }
+
     }
 }
 
