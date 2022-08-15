@@ -1,0 +1,9 @@
+com/foco/helloworld/insecrejackson.class
+com/foco/helloworld/XSS.class
+com/foco/helloworld/HelloworldApplication.class
+com/foco/helloworld/SSRF.class
+com/foco/helloworld/Greeting.class
+com/foco/helloworld/Car.class
+com/foco/helloworld/pathTraversal.class
+com/foco/helloworld/HelloController.class
+com/foco/helloworld/Rce.class

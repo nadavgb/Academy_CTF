@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reset.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reveal.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/theme/black.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="http://127.0.0.1:9040/plugin/highlight/monokai.css">
+	<title>The secret island</title>
+</head>
+<body>
+<div class="reveal">
+	<div class="slides">
+		<section data-auto-animate>
+			<h3 data-id="code-title">Controller</h3>
+			<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+				//
+
+					@GetMapping( value = "/challenge3", produces = MediaType.IMAGE_JPEG_VALUE)
+					public String challenge3(@ModelAttribute Callenge3 challenge3, Model m) throws IOException {
+						String data = challenge3.getUrl();
+						m.addAttribute("data", data);
+						return "challenge3";
+					}
+
+
+				//
+					</code></pre>
+		</section>
+		<section data-auto-animate>
+			<h3 data-id="code-title">Class 3</h3>
+			<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+					public class challenge3{
+
+						private String url;
+
+						public String do_get(String url) throws IOException {
+							StringBuffer content = new StringBuffer();
+							URL uri = new URL(url);
+							URLConnection yc = uri.openConnection();
+							BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+							String inputLine;
+
+							while ((inputLine = in.readLine()) != null)
+								content.append(inputLine);
+							in.close();
+							return content.toString();
+						}
+
+						public String getUrl() throws IOException {
+							url = do_get(url);
+							return url;
+						}
+
+						public void setUrl(String url) {
+							this.url = url;
+						}
+					}
+
+
+					</code></pre>
+			<p>Solve the <a href="/challenge3?url=http://ctf.fuf.me" target="_blank">challenge</a>.</p>
+
+		</section>
+		<section id="grand-finale">
+<!--			<h2>The end</h2>-->
+			<a href="/code_challenge4">To the next challenge</a><br>
+		</section>
+	</div>
+</div>
+<script src="http://127.0.0.1:9040/dist/reveal.js"></script>
+<script src="http://127.0.0.1:9040/plugin/notes/notes.js"></script>
+<script src="http://127.0.0.1:9040/plugin/markdown/markdown.js"></script>
+<script src="http://127.0.0.1:9040/plugin/highlight/highlight.js"></script>
+<script>
+	// More info about initialization & config:
+	// - https://revealjs.com/initialization/
+	// - https://revealjs.com/config/
+	Reveal.initialize({
+		hash: true,
+
+		// Learn about plugins: https://revealjs.com/plugins/
+		plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+	});
+</script>
+</body>
+</body>
+</html>

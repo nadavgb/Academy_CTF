@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reset.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reveal.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/theme/black.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="http://127.0.0.1:9040/plugin/highlight/monokai.css">
+    <title>Do u even inject?</title>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+		<section data-auto-animate>
+			<h3 data-id="code-title">Controller</h3>
+			<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+				//
+
+						@GetMapping("/challenge1")
+						public String challenge(@ModelAttribute Challenge challenge, Model m) {
+							String payload = challenge.getQuery();
+							m.addAttribute("data", payload);
+						  return "hello";
+						};
+
+				//
+					</code></pre>
+		</section>
+        <section data-auto-animate>
+            <h3 data-id="code-title">Class 1</h3>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+						public class Challenge {
+							private String query;
+
+
+							public void setQuery(String query) {
+								this.query = query;
+							}
+
+							public String getQuery() {
+								if (query.toLowerCase().contains("script")){
+									return "are you kidding me?! try again ...";
+								}else {
+									return query;
+								}
+
+							}
+						}
+					</code></pre>
+            <p>Solve the <a href="/challenge1?query=Crazy%20hacker?" target="_blank">challenge</a>.</p>
+        </section>
+		<section id="grand-finale">
+			<!--			<h2>The end</h2>-->
+			<a href="/code_challenge2">To the next challenge</a><br>
+		</section>
+    </div>
+</div>
+
+<script src="http://127.0.0.1:9040/dist/reveal.js"></script>
+<script src="http://127.0.0.1:9040/plugin/notes/notes.js"></script>
+<script src="http://127.0.0.1:9040/plugin/markdown/markdown.js"></script>
+<script src="http://127.0.0.1:9040/plugin/highlight/highlight.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+    });
+</script>
+</body>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reset.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reveal.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/theme/black.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="http://127.0.0.1:9040/plugin/highlight/monokai.css">
+	<title>The secret island</title>
+</head>
+<body>
+<div class="reveal">
+	<div class="slides">
+		<section data-auto-animate>
+			<h3 data-id="code-title">Controller</h3>
+			<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+				//
+
+					@PostMapping( "/challenge4")
+					public String challenge4(@ModelAttribute Challenge4 challenge4, Model model) throws MalformedURLException, URISyntaxException, UnsupportedEncodingException {
+						String output = challenge4.getInput();
+						model.addAttribute("output", output);
+						return "challenge4";
+					};
+
+
+				//
+					</code></pre>
+		</section>
+		<section data-auto-animate>
+			<h3 data-id="code-title">Class 4</h3>
+			<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+					public class challenge4{
+								String input;
+
+								public static String execCmd(String cmd) {
+									String result = null;
+									try (InputStream inputStream = Runtime.getRuntime().exec(cmd).getInputStream();
+										 Scanner s = new Scanner(inputStream).useDelimiter("\\A")) {
+										result = s.hasNext() ? s.next() : null;
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+									return result;
+								}
+
+								public String strip_encoding(String command) throws MalformedURLException, URISyntaxException, UnsupportedEncodingException {
+									String a_command = URLDecoder.decode(command, "utf-8");
+									String  b_command = URLDecoder.decode(a_command, "utf-8");
+
+									return b_command;
+								}
+
+								public String command_filter(String command){
+									String r_command = java.net.URLDecoder.decode(command);
+									if (r_command.contains("#")) {
+										command = "invalid";
+									}
+									return command;
+								}
+
+								public String run_command(String commnad) throws MalformedURLException, URISyntaxException, UnsupportedEncodingException {
+									commnad = command_filter(commnad);
+									if (commnad == "invalid"){
+										return commnad;
+									}else {
+										String run_me = strip_encoding(commnad);
+										String result = execCmd(run_me);
+
+										return result;
+									}
+								}
+
+								public void setInput(String input) {
+									this.input = input;
+								}
+
+								public String getInput() throws MalformedURLException, URISyntaxException, UnsupportedEncodingException {
+									input = run_command(input);
+									return input;
+								}
+					}
+
+
+					</code></pre>
+			<p>Solve the <a href="/challenge4" target="_blank">challenge</a>.</p>
+
+		</section>
+		<section id="grand-finale">
+<!--			<h2>The end</h2>-->
+			<a href="/code_challenge5">To the next challenge</a><br>
+		</section>
+	</div>
+</div>
+<script src="http://127.0.0.1:9040/dist/reveal.js"></script>
+<script src="http://127.0.0.1:9040/plugin/notes/notes.js"></script>
+<script src="http://127.0.0.1:9040/plugin/markdown/markdown.js"></script>
+<script src="http://127.0.0.1:9040/plugin/highlight/highlight.js"></script>
+<script>
+	// More info about initialization & config:
+	// - https://revealjs.com/initialization/
+	// - https://revealjs.com/config/
+	Reveal.initialize({
+		hash: true,
+
+		// Learn about plugins: https://revealjs.com/plugins/
+		plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+	});
+</script>
+</body>
+</body>
+</html>
