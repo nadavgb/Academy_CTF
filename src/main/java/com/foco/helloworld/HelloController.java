@@ -16,6 +16,9 @@ public class HelloController {
 
     private static final String HELLO_PAGE = "hello";
     private static final String JACKSON = "jackson";
+    private static final String PATH_TRAV = "patht";
+    private static final String _SSRF = "ssrf";
+    private static final String _RCE = "rce";
 
     //Index
     @GetMapping("/")
@@ -36,20 +39,20 @@ public class HelloController {
     public String pathTraversal(@ModelAttribute pathTraversal pathT, Model m){
         String data = pathT.getFilename();
         m.addAttribute("data", data);
-        return "patht";
+        return PATH_TRAV;
     }
     //SSRF task
     @GetMapping( value = "/challenge3", produces = MediaType.IMAGE_JPEG_VALUE)
     public String ssrf(@ModelAttribute SSRF ssrf, Model m) throws IOException {
         String data = ssrf.getUrl();
         m.addAttribute("data", data);
-        return "ssrf";
+        return _SSRF;
     }
 
     //RCE
     @GetMapping(value = "/challenge4")
     public String hello_rce() {
-        return "rce";
+        return _RCE;
     };
 
 
@@ -57,7 +60,7 @@ public class HelloController {
     public String rce(@ModelAttribute Rce rce, Model model) throws MalformedURLException, URISyntaxException, UnsupportedEncodingException {
         String output = rce.getInput();
         model.addAttribute("output", output);
-        return "rce";
+        return _RCE;
     };
 
     //Jackson
