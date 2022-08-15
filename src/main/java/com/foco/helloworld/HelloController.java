@@ -19,6 +19,7 @@ public class HelloController {
     private static final String PATH_TRAV = "patht";
     private static final String _SSRF = "ssrf";
     private static final String _RCE = "rce";
+    private static final String INSECDSRLZ = "insecdsrlz";
 
     //Index
     @GetMapping("/")
@@ -74,8 +75,6 @@ public class HelloController {
             e.printStackTrace();
             return JACKSON;
         }
-
-
     }
 
 
@@ -88,6 +87,18 @@ public class HelloController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return JACKSON;
+        }
+    }
+    //InsecureDeserialization
+    @GetMapping("/challenge9")
+    public String insecDesrlz(@ModelAttribute Utils obj, Model model) throws IOException {
+        try{
+            String data = insecDesrlz(obj, model);
+            model.addAttribute("data", data);
+            return INSECDSRLZ;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return INSECDSRLZ;
         }
 
 
