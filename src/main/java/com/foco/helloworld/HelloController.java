@@ -18,6 +18,7 @@ public class HelloController {
     private static final String JACKSON = "jackson";
     private static final String CHALLENGE7_ADMIN_TEMPLATE = "admin";
     private static final String CHALLENGE7_USER_TEMPLATE = "user";
+    private static final String CHALLENGE7_LOGIN_TEMPLATE = "login";
 
     //Index
     @GetMapping("/")
@@ -129,16 +130,17 @@ public class HelloController {
     }
 
     //Unprotected Data Binding 
-    @GetMapping( value = "/challenge7")
+    @RequestMapping( value = "/challenge7")
     public String code7(@ModelAttribute UnprotectedDataBinding dbind, Model m) throws IOException {
 
-        // Check if user is admin and return the right resource template
-        // TODO: Change isAdmin to type boolean
-        if(dbind.getIsAdmin() != null){
-            return CHALLENGE7_ADMIN_TEMPLATE;
-        } else {
-            return CHALLENGE7_USER_TEMPLATE;
+        // Trying to authenticate the user with the provided username and password
+        // Return admin page if user is authenticated as admin and user page if user is not admin
+        if(dbind.Auth()){
+            return (dbind.getIsAdmin() != null) ? CHALLENGE7_ADMIN_TEMPLATE : CHALLENGE7_USER_TEMPLATE;
         }
+        
+        // Return Login page if auth fails
+        return CHALLENGE7_LOGIN_TEMPLATE;
 
     }
 }
