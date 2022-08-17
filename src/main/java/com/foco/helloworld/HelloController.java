@@ -1,10 +1,12 @@
 package com.foco.helloworld;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.engine.AttributeName;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -20,6 +22,13 @@ public class HelloController {
     private static final String _SSRF = "ssrf";
     private static final String _RCE = "rce";
     private static final String INSECDSRLZ = "insecdsrlz";
+    private static final String CODESNIP1 = "codesnip";
+    private static final String CODESNIP2 = "codesnip2";
+    private static final String CODESNIP3 = "codesnip3";
+    private static final String CODESNIP4 = "codesnip4";
+    private static final String CODESNIP5 = "codesnip5";
+    private static final String CODESNIP6 = "codesnip6";
+    private static final String CODESNIP9 = "codesnip9";
 
     //Index
     @GetMapping("/")
@@ -90,64 +99,60 @@ public class HelloController {
         }
     }
     //InsecureDeserialization
+    @PostMapping("/challenge9")
+    public String insecDesrlz(@ModelAttribute insecureDeserialization filn, Model m)throws Exception, IOException, ClassNotFoundException{
+        String data2 = filn.getFileContent();
+        m.addAttribute("data2", data2);
+        return INSECDSRLZ;
+    }
     @GetMapping("/challenge9")
-    public String insecDesrlz(@ModelAttribute Utils obj, Model model) throws IOException {
-        try{
-            String data = insecDesrlz(obj, model);
-            model.addAttribute("data", data);
-            return INSECDSRLZ;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return INSECDSRLZ;
-        }
-
-
+    public String insecDesrlz(){
+        return INSECDSRLZ;
     }
 
-
-
-
-
     //code review task
-
     
     //xss
     @GetMapping( value = "/code_challenge1")
     public String code() throws IOException {
-        return "codesnip";
+        return CODESNIP1;
     }
     //path traversal
     @GetMapping( value = "/code_challenge2")
     public String code2() throws IOException {
-        return "codesnip2";
+        return CODESNIP2;
     }
 
     //SSRF
     @GetMapping( value = "/code_challenge3")
     public String code3() throws IOException {
-        return "codesnip3";
+        return CODESNIP3;
     }
 
     //RCE
     @GetMapping( value = "/code_challenge4")
     public String code4() throws IOException {
-        return "codesnip4";
+        return CODESNIP4;
     }
 
     //PHP code flow
     @GetMapping( value = "/code_challenge5")
     public String code5() throws IOException {
-        return "codesnip5";
+        return CODESNIP5;
     }
     @GetMapping( value = "/code_challenge6")
     public String code6() throws IOException {
-        return "codesnip6";
+        return CODESNIP6;
+    }
+
+    @GetMapping( value = "/code_challenge9")
+    public String code9() throws IOException {
+        return CODESNIP9;
     }
 }
 
 //SQLi
 //spring4shell
-//
 
 
 

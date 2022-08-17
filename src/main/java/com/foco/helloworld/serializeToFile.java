@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import lombok.Data;
+
+@Data
 class Utils
 {
     // Function to serialize an object and write it to a file
