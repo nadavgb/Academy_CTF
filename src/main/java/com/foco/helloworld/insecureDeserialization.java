@@ -33,7 +33,7 @@ public class insecureDeserialization implements Serializable{
       }
       catch(ClassCastException e){
          filecontent = FLAG;
-      }
+      } //aaaa
       return filecontent;
    }
 
