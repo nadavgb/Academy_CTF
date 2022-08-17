@@ -1,9 +1,13 @@
 package com.foco.helloworld;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -23,6 +27,8 @@ public class HelloController {
     private static final String PATH_TRAV = "patht";
     private static final String _SSRF = "ssrf";
     private static final String _RCE = "rce";
+    private static final String _BAC_USER = "bac_user";
+    private static final String _BAC_ADMIN = "bac_admin";
 
 
     //Index
@@ -98,6 +104,35 @@ public class HelloController {
 
     }
 
+    // START of Challenge 8 - Broken Acccess Control
+    @GetMapping("/challenge8")
+    public String headerBypass(){
+        return _BAC_USER;
+    }
+
+    // Get the necessary HTTP headers and generate auth token
+    @GetMapping("/admindashboard")
+    public String header(@RequestHeader("X-Auth-Token") String authLoginToken, @RequestHeader("Host") String hostHeader, @RequestHeader("User-Agent") String userAgentHeader, @ModelAttribute BAC header, Model m) {
+        if (header.isAuthorized(hostHeader, userAgentHeader, authLoginToken)) {
+            return _BAC_ADMIN;
+        } else {
+            m.addAttribute("data", "You are not authorized to access the Admin Dashboard.");
+            return _BAC_USER;
+        }        
+    }
+
+    // Catch `MissingRequestHeaderException` when trying to access the admin
+    // dashboard without the necessary header
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<String> handleMissingRequestHeaderException(MissingRequestHeaderException exception) {
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            // .body(exception.getMessage());
+            .body("You are not authorized to access the Admin Dashboard.");
+    }
+    // END of Challenge 8 - Broken Acccess Control
+
     //code review task
 
     
@@ -134,6 +169,11 @@ public class HelloController {
         return "codesnip6";
     }
 
+    @GetMapping( value = "/code_challenge8")
+    public String code7() throws IOException {
+        return "codesnip8";
+    }
+
     //Unprotected Data Binding 
     @GetMapping( value = "/challenge7")
     public String code7(@ModelAttribute UnprotectedDataBinding dbind, Model m) throws IOException {
@@ -147,6 +187,10 @@ public class HelloController {
         }
 
     }
+
+
+    // Broken Access Control
+
 }
 
 //SQLi
