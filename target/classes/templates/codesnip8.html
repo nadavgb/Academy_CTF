@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reset.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reveal.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/theme/black.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="http://127.0.0.1:9040/plugin/highlight/monokai.css">
+    <title>Visitors Dashboard</title>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+		<section data-auto-animate>
+			<h3 data-id="code-title">Controller</h3>
+			<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+				//
+                    @GetMapping("/challenge8")
+                    public String headerBypass(){
+                        return _BAC_USER;
+                    }
+                
+                    @GetMapping("/admindashboard")
+                    public String header(@RequestHeader("X-Auth-Token") String authLoginToken, @RequestHeader("Host") String hostHeader, @RequestHeader("User-Agent") String userAgentHeader, @ModelAttribute BAC header, Model m) {
+                        if (header.isAuthorized(hostHeader, userAgentHeader, authLoginToken)) {
+                            return _BAC_ADMIN;
+                        } else {
+                            m.addAttribute("data", "You are not authorized to access the Admin Dashboard.");
+                            return _BAC_USER;
+                        }        
+                    }
+                
+                    @ExceptionHandler(MissingRequestHeaderException.class)
+                    @ResponseStatus(HttpStatus.FORBIDDEN)
+                    public ResponseEntity<String> handleMissingRequestHeaderException(MissingRequestHeaderException exception) {
+                        return ResponseEntity
+                            .status(HttpStatus.FORBIDDEN)
+                            // .body(exception.getMessage());
+                            .body("You are not authorized to access the Admin Dashboard.");
+                    }
+				//
+					</code></pre>
+		</section>
+        <section data-auto-animate>
+            <h3 data-id="code-title">Class 1</h3>
+            <pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+                package com.foco.helloworld;
+
+                import java.util.Base64;
+                
+                public class BAC {
+                
+                    private static final String adminAuth = "isAdminAuth";
+                
+                    public String generateAuthToken(String hostHeader, String userAgentHeader) {
+                        String combinedHeaders = hostHeader + ',' + userAgentHeader + ',' + adminAuth;
+                        String generatedAuthToken = Base64.getEncoder().encodeToString(combinedHeaders.getBytes());
+                
+                        return generatedAuthToken;
+                    }
+                
+                    public Boolean isAuthorized(String hostHeader, String userAgentHeader, String authLoginToken) {
+                        String generatedAuthToken = generateAuthToken(hostHeader, userAgentHeader);
+                        
+                        if (authLoginToken.equals(generatedAuthToken)) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                
+                }
+					</code></pre>
+            <p>Solve the <a href="/challenge8" target="_blank">challenge</a>.</p>
+        </section>
+		<section id="grand-finale">
+			<!--			<h2>The end</h2>-->
+			<a href="/code_challenge2">To the next challenge</a><br>
+		</section>
+    </div>
+</div>
+
+<script src="http://127.0.0.1:9040/dist/reveal.js"></script>
+<script src="http://127.0.0.1:9040/plugin/notes/notes.js"></script>
+<script src="http://127.0.0.1:9040/plugin/markdown/markdown.js"></script>
+<script src="http://127.0.0.1:9040/plugin/highlight/highlight.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+    });
+</script>
+</body>
+</body>
+</html>

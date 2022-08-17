@@ -2,9 +2,13 @@ package com.foco.helloworld;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.engine.AttributeName;
 
@@ -18,6 +22,10 @@ public class HelloController {
 
     private static final String HELLO_PAGE = "hello";
     private static final String JACKSON = "jackson";
+
+    private static final String CHALLENGE7_ADMIN_TEMPLATE = "admin";
+    private static final String CHALLENGE7_USER_TEMPLATE = "user";
+
     private static final String PATH_TRAV = "patht";
     private static final String _SSRF = "ssrf";
     private static final String _RCE = "rce";
@@ -29,6 +37,9 @@ public class HelloController {
     private static final String CODESNIP5 = "codesnip5";
     private static final String CODESNIP6 = "codesnip6";
     private static final String CODESNIP9 = "codesnip9";
+    private static final String _BAC_USER = "bac_user";
+    private static final String _BAC_ADMIN = "bac_admin";
+
 
     //Index
     @GetMapping("/")
@@ -110,6 +121,36 @@ public class HelloController {
         return INSECDSRLZ;
     }
 
+    // START of Challenge 8 - Broken Acccess Control
+    @GetMapping("/challenge8")
+    public String headerBypass(){
+        return _BAC_USER;
+    }
+
+    // Get the necessary HTTP headers and generate auth token
+    @GetMapping("/admindashboard")
+    public String header(@RequestHeader("X-Auth-Token") String authLoginToken, @RequestHeader("Host") String hostHeader, @RequestHeader("User-Agent") String userAgentHeader, @ModelAttribute BAC header, Model m) {
+        if (header.isAuthorized(hostHeader, userAgentHeader, authLoginToken)) {
+            return _BAC_ADMIN;
+        } else {
+            m.addAttribute("data", "You are not authorized to access the Admin Dashboard.");
+            return _BAC_USER;
+        }        
+    }
+
+    // Catch `MissingRequestHeaderException` when trying to access the admin
+    // dashboard without the necessary header
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<String> handleMissingRequestHeaderException(MissingRequestHeaderException exception) {
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            // .body(exception.getMessage());
+            .body("You are not authorized to access the Admin Dashboard.");
+    }
+    // END of Challenge 8 - Broken Acccess Control
+
+
     //code review task
     
     //xss
@@ -149,6 +190,29 @@ public class HelloController {
     public String code9() throws IOException {
         return CODESNIP9;
     }
+
+    @GetMapping( value = "/code_challenge8")
+    public String code7() throws IOException {
+        return "codesnip8";
+    }
+
+    //Unprotected Data Binding 
+    @GetMapping( value = "/challenge7")
+    public String code7(@ModelAttribute UnprotectedDataBinding dbind, Model m) throws IOException {
+
+        // Check if user is admin and return the right resource template
+        // TODO: Change isAdmin to type boolean
+        if(dbind.getIsAdmin() != null){
+            return CHALLENGE7_ADMIN_TEMPLATE;
+        } else {
+            return CHALLENGE7_USER_TEMPLATE;
+        }
+
+    }
+
+
+    // Broken Access Control
+
 }
 
 //SQLi
