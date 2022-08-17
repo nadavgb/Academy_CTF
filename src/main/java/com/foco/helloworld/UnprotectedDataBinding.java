@@ -26,7 +26,6 @@ public class UnprotectedDataBinding {
             }
             
         }
-
         // Return false if authentication fails
         return false;
     }

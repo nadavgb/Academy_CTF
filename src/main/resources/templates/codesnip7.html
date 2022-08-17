@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reset.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reveal.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/theme/black.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="http://127.0.0.1:9040/plugin/highlight/monokai.css">
+	<title>Catch me if you can!</title>
+</head>
+<body>
+<div class="reveal">
+	<div class="slides">
+		<section data-auto-animate>
+			<h3 data-id="code-title">Controller</h3>
+			<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+                // Unprotected Data Binding
+                @RequestMapping(value = "/challenge7")
+                public String code7(@ModelAttribute UnprotectedDataBinding dbind, Model m) throws IOException {
+            
+                    // Trying to authenticate the user with the provided username and password
+                    // Return admin page if user is authenticated as admin and user page if user is
+                    // not admin
+                    if (dbind.Auth()) {
+                        return (dbind.getIsAdmin() != null) ? CHALLENGE7_ADMIN_TEMPLATE : CHALLENGE7_USER_TEMPLATE;
+                    }
+            
+                    // Return Login page if auth fails
+                    return CHALLENGE7_LOGIN_TEMPLATE;
+                }
+					</code></pre>
+		</section>
+		<section data-auto-animate>
+			<h3 data-id="code-title">Auth Class</h3>
+			<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+                import lombok.Data;
+
+                // Configure lombok data binding
+                @Data
+                public class UnprotectedDataBinding {
+                
+                    private String isAdmin;
+                    private String username, password;
+                
+                    // This function checks if the provided user & password match and then update permmisions accordinly
+                    public boolean Auth(){
+                
+                        // Check if user and password are not empty
+                        if(username != null && password != null){
+                
+                            // Check Authentication for admin User
+                            if (String.valueOf(username.toLowerCase()).equals("admin") && String.valueOf(password.hashCode()).equals("1216985755")) {
+                                isAdmin = "yes";
+                                return true;   
+                            } 
+                            // Check authentication for avigdor user
+                            if (String.valueOf(username).equals("avigdor") && String.valueOf(password).equals("JsecAcademy")) {
+                                return true;
+                            }
+                            
+                        }
+                
+                        // Return false if authentication fails
+                        return false;
+                    }
+                    
+                }
+					</code></pre>
+			<p>Solve the <a href="/challenge7" target="_blank">challenge</a>.</p>
+
+		</section>
+		<section id="grand-finale">
+<!--			<h2>The end</h2>-->
+			<a href="/">To the next challenge</a><br>
+		</section>
+	</div>
+</div>
+<script src="http://127.0.0.1:9040/dist/reveal.js"></script>
+<script src="http://127.0.0.1:9040/plugin/notes/notes.js"></script>
+<script src="http://127.0.0.1:9040/plugin/markdown/markdown.js"></script>
+<script src="http://127.0.0.1:9040/plugin/highlight/highlight.js"></script>
+<script>
+	// More info about initialization & config:
+	// - https://revealjs.com/initialization/
+	// - https://revealjs.com/config/
+	Reveal.initialize({
+		hash: true,
+
+		// Learn about plugins: https://revealjs.com/plugins/
+		plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+	});
+</script>
+</body>
+</body>
+</html>
