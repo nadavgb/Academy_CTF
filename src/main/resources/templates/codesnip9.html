@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reset.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/reveal.css">
+	<link rel="stylesheet" href="http://127.0.0.1:9040/dist/theme/black.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="http://127.0.0.1:9040/plugin/highlight/monokai.css">
+	<title>The secret island</title>
+</head>
+<body>
+<div class="reveal">
+	<div class="slides">
+		<section data-auto-animate>
+			<h3 data-id="code-title">Find the vulnerability</h3>
+			<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+
+				@PostMapping("/challenge9")
+				public String insecDesrlz(@ModelAttribute insecureDeserialization filn, Model m)throws Exception, IOException, ClassNotFoundException{
+					String data2 = filn.getFileContent();
+					m.addAttribute("data2", data2);
+					return INSECDSRLZ;
+				}
+				@GetMapping("/challenge9")
+				public String insecDesrlz(){
+					return INSECDSRLZ;
+				}
+
+			</code></pre>
+		</section>
+		<section data-auto-animate>
+			<h3 data-id="code-title">Find the vulnerability</h3>
+			<pre data-id="code-animation"><code class="hljs" data-trim data-line-numbers style="font-size: medium">
+				public String getFileContent() throws IOException{
+					try{
+					   byte[] decoded = Base64.getDecoder().decode(filecontent);
+					   InputStream stream = new ByteArrayInputStream(decoded);
+					   ObjectInputStream ois = new ObjectInputStream(stream);
+					   NormalObj unserObj = (NormalObj)ois.readObject();
+					   ois.close();
+			  
+					}
+					catch (ClassNotFoundException e){
+					   return CLASSNOTFOUNDERROR;
+					}
+					catch(StreamCorruptedException e){
+					   return BASE64ERROR;
+					}
+					catch(ClassCastException e){
+					   filecontent = FLAG;
+					}
+					return filecontent;
+				 }
+			  
+				 class NormalObj implements Serializable{
+					public String name;
+					public NormalObj(String name){
+						this.name = name;
+					}
+				
+					private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException{
+						in.defaultReadObject();
+						System.out.println(this.name);
+					}
+				}
+			   
+			  }
+			  
+			  class Liav implements Serializable{
+				 public String gutman;
+			  
+				 public Liav(String gutman){
+					 this.gutman = gutman;
+				 }
+			  
+				 private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException, ClassCastException{
+					 in.defaultReadObject();
+					 System.out.println(gutman);
+				 }
+			  }
+			  
+			</code></pre>
+
+		</section>
+
+		<section id="grand-finale">
+<!--			<h2>The end</h2>-->
+			<a href="/">Back Home</a><br>
+		</section>
+	</div>
+</div>
+<script src="http://127.0.0.1:9040/dist/reveal.js"></script>
+<script src="http://127.0.0.1:9040/plugin/notes/notes.js"></script>
+<script src="http://127.0.0.1:9040/plugin/markdown/markdown.js"></script>
+<script src="http://127.0.0.1:9040/plugin/highlight/highlight.js"></script>
+<script>
+	// More info about initialization & config:
+	// - https://revealjs.com/initialization/
+	// - https://revealjs.com/config/
+	Reveal.initialize({
+		hash: true,
+
+		// Learn about plugins: https://revealjs.com/plugins/
+		plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+	});
+</script>
+</body>
+</body>
+</html>
