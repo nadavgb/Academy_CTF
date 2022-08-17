@@ -22,10 +22,8 @@ public class HelloController {
 
     private static final String HELLO_PAGE = "hello";
     private static final String JACKSON = "jackson";
-
     private static final String CHALLENGE7_ADMIN_TEMPLATE = "admin";
     private static final String CHALLENGE7_USER_TEMPLATE = "user";
-
     private static final String PATH_TRAV = "patht";
     private static final String _SSRF = "ssrf";
     private static final String _RCE = "rce";
